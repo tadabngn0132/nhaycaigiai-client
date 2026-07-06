@@ -1,4 +1,4 @@
-import type { RegistrationData } from '../components/forms/RegistrationForm'
+import type { RegistrationData } from '../features/registration/model/registrationSchema'
 
 type RegistrationResponse = { registrationCode: string }
 
@@ -8,7 +8,9 @@ export async function createRegistration(data: RegistrationData): Promise<Regist
   if (!API_URL) {
     await new Promise((resolve) => setTimeout(resolve, 700))
     const registrationCode = `NCG30-${Date.now().toString().slice(-6)}`
-    const registrations = JSON.parse(localStorage.getItem('ncg30-registrations') ?? '[]')
+    const registrations: RegistrationData[] = JSON.parse(
+      localStorage.getItem('ncg30-registrations') ?? '[]',
+    )
     localStorage.setItem('ncg30-registrations', JSON.stringify([...registrations, { ...data, registrationCode }]))
     return { registrationCode }
   }
@@ -18,6 +20,9 @@ export async function createRegistration(data: RegistrationData): Promise<Regist
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
   })
-  if (!response.ok) throw new Error('Máy chủ đang bận. Vui lòng thử lại sau.')
-  return response.json()
+  if (!response.ok) {
+    throw new Error('Máy chủ đang bận. Vui lòng thử lại sau.')
+  }
+
+  return response.json() as Promise<RegistrationResponse>
 }
