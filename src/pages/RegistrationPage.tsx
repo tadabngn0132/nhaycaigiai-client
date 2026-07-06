@@ -11,17 +11,6 @@ export default function RegistrationPage() {
       </header>
 
       <section className="registration-layout">
-        <aside className="event-intro">
-          <p className="eyebrow">Dance competition · 2026</p>
-          <h1>NHẢY CÁI<br /><em>GIẢI</em> 3.0</h1>
-          <p className="intro-copy">Sàn đấu đã mở. Đăng ký để viết tiếp câu chuyện bằng từng chuyển động của bạn.</p>
-          <dl className="event-meta">
-            <div><dt>Ngày thi đấu</dt><dd>20.09.2026</dd></div>
-            <div><dt>Địa điểm</dt><dd>Hà Nội, Việt Nam</dd></div>
-            <div><dt>Hạn đăng ký</dt><dd>05.09.2026</dd></div>
-          </dl>
-        </aside>
-
         <div className="form-panel">
           <div className="form-title">
             <p className="eyebrow">Registration form</p>
