@@ -10,14 +10,14 @@ type FormFieldProps = {
 
 export function FormField({ label, required, hint, error, children }: FormFieldProps) {
   return (
-    <label className="field">
-      <span className="field-label">
+    <label className="flex min-w-0 flex-col gap-1.5">
+      <span className="text-[13px] font-semibold text-[#181817]">
         {label}
-        {required && <b> *</b>}
-        {hint && <small>{hint}</small>}
+        {required && <b className="text-[#c92c35]"> *</b>}
+        {hint && <small className="float-right font-normal text-[#817c75]">{hint}</small>}
       </span>
       {children}
-      {error && <span className="error-message">{error}</span>}
+      {error && <span className="text-[11px] text-[#a9272e]">{error}</span>}
     </label>
   )
 }

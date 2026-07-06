@@ -6,20 +6,23 @@ export const TICKETS = [
     badge: "Battle pass",
     title: "Vé người đấu",
     description: "Tham gia thi đấu và vào cửa sự kiện",
-    price: "159.000đ",
+    priceValue: 299_000,
+    price: "299,000 VNĐ",
   },
   {
     value: "audience",
     badge: "Spectator pass",
     title: "Vé người xem",
     description: "Vào cửa và theo dõi toàn bộ giải đấu",
-    price: "59.000đ",
+    priceValue: 0,
+    price: "0 VNĐ",
   },
 ] as const satisfies ReadonlyArray<{
   value: TicketType;
   badge: string;
   title: string;
   description: string;
+  priceValue: number;
   price: string;
 }>;
 
@@ -55,6 +58,10 @@ export const EXPERIENCE_LEVELS = [
   { value: "over-3-years", label: "Trên 3 năm" },
 ] as const;
 
-export function getTicketPrice(ticketType: TicketType) {
-  return TICKETS.find((ticket) => ticket.value === ticketType)?.price ?? "";
+export function getTicketPrice(ticketTypes: TicketType[]) {
+  const total = TICKETS
+    .filter((ticket) => ticketTypes.includes(ticket.value))
+    .reduce((sum, ticket) => sum + ticket.priceValue, 0);
+
+  return `${total.toLocaleString("vi-VN")} VNĐ`;
 }

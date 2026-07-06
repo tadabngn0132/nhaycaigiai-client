@@ -1,7 +1,8 @@
 import { z } from 'zod'
 
 export const registrationSchema = z.object({
-  ticketType: z.enum(['competitor', 'audience']),
+  ticketTypes: z.array(z.enum(['competitor', 'audience']))
+    .min(1, 'Vui lòng chọn ít nhất một loại vé'),
   fullName: z.string().trim().min(2, 'Vui lòng nhập họ và tên'),
   stageName: z.string().trim().optional(),
   dateOfBirth: z.string().min(1, 'Vui lòng chọn ngày sinh'),
@@ -19,7 +20,7 @@ export const registrationSchema = z.object({
   note: z.string().trim().max(500, 'Ghi chú tối đa 500 ký tự').optional(),
   acceptedTerms: z.literal(true, { message: 'Bạn cần đồng ý với điều lệ cuộc thi' }),
 }).superRefine((data, context) => {
-  if (data.ticketType !== 'competitor') return
+  if (!data.ticketTypes.includes('competitor')) return
 
   const requiredCompetitorFields: Array<[keyof typeof data, string]> = [
     ['stageName', 'Vui lòng nhập tên thi đấu'],
@@ -37,4 +38,4 @@ export const registrationSchema = z.object({
 })
 
 export type RegistrationData = z.infer<typeof registrationSchema>
-export type TicketType = RegistrationData['ticketType']
+export type TicketType = RegistrationData['ticketTypes'][number]

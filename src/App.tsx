@@ -1,6 +1,5 @@
 import { Toaster } from 'react-hot-toast'
 import RegistrationPage from './pages/RegistrationPage'
-import './App.css'
 
 function App() {
   return (
