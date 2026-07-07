@@ -1,12 +1,19 @@
 import { Toaster } from 'react-hot-toast'
-import RegistrationPage from './pages/RegistrationPage'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import ConfirmationPage from './pages/ConfirmationPage'
+import HomePage from './pages/HomePage'
+import PaymentPage from './pages/PaymentPage'
 
 function App() {
   return (
-    <>
-      <RegistrationPage />
+    <BrowserRouter>
+      <Routes>
+        <Route element={<HomePage />} path="/" />
+        <Route element={<PaymentPage />} path="/payment" />
+        <Route element={<ConfirmationPage />} path="/confirmation" />
+      </Routes>
       <Toaster position="top-center" toastOptions={{ duration: 3500 }} />
-    </>
+    </BrowserRouter>
   )
 }
 

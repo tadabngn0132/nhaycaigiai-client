@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useState } from 'react'
 import { useForm, useWatch } from 'react-hook-form'
 import toast from 'react-hot-toast'
+import { useNavigate } from 'react-router-dom'
 import { createRegistration } from '../../../services/api'
 import {
   type RegistrationData,
@@ -10,11 +10,14 @@ import {
 import { getTicketPrice } from '../registrationOptions'
 import { CompetitionSection } from './CompetitionSection'
 import { PersonalInfoSection } from './PersonalInfoSection'
-import { RegistrationSuccess } from './RegistrationSuccess'
 import { TicketSelector } from './TicketSelector'
 
-export default function RegistrationForm() {
-  const [registrationCode, setRegistrationCode] = useState('')
+type RegistrationFormProps = {
+  onSubmitted?: () => void
+}
+
+export default function RegistrationForm({ onSubmitted }: RegistrationFormProps) {
+  const navigate = useNavigate()
   const {
     register,
     handleSubmit,
@@ -29,25 +32,16 @@ export default function RegistrationForm() {
 
   async function submitRegistration(data: RegistrationData) {
     try {
-      const result = await createRegistration(data)
-      setRegistrationCode(result.registrationCode)
-      toast.success('Đăng ký thành công!')
-      window.scrollTo({ top: 0, behavior: 'smooth' })
+      await createRegistration(data)
+      toast.success('Đã tạo thông tin thanh toán')
+      onSubmitted?.()
+      navigate('/payment')
     } catch (error) {
       const message = error instanceof Error
         ? error.message
         : 'Không thể gửi đăng ký. Vui lòng thử lại.'
       toast.error(message)
     }
-  }
-
-  if (registrationCode) {
-    return (
-      <RegistrationSuccess
-        registrationCode={registrationCode}
-        onCreateAnother={() => setRegistrationCode('')}
-      />
-    )
   }
 
   return (
