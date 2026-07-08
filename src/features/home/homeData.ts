@@ -167,6 +167,11 @@ export const merchItems: HomeProgramItem[] = [
     image: defaultTempImage,
     imageAlt: 'Nhảy Cái Giải event tee',
     actionLabel: 'Đặt merch',
+    detailTitle: 'NCG Event Tee',
+    detailDescription: 'Áo thun sự kiện dành cho dancer và supporter muốn mang tinh thần Nhảy Cái Giải trong các buổi workshop, rehearsal và ngày thi đấu.',
+    schedule: 'Mở bán xuyên suốt mùa giải',
+    location: 'NCG merch booth',
+    price: 'Liên hệ tại booth',
   },
   {
     slug: 'dance-tote',
@@ -178,6 +183,11 @@ export const merchItems: HomeProgramItem[] = [
     image: defaultTempImage,
     imageAlt: 'Nhảy Cái Giải dance tote',
     actionLabel: 'Đặt merch',
+    detailTitle: 'Dance Tote',
+    detailDescription: 'Túi vải gọn nhẹ để mang giày, nước, khăn và đồ tập trong những ngày workshop hoặc thi đấu.',
+    schedule: 'Mở bán theo từng drop',
+    location: 'NCG merch booth',
+    price: 'Liên hệ tại booth',
   },
   {
     slug: 'sticker-pack',
@@ -189,6 +199,11 @@ export const merchItems: HomeProgramItem[] = [
     image: defaultTempImage,
     imageAlt: 'Nhảy Cái Giải sticker pack',
     actionLabel: 'Đặt merch',
+    detailTitle: 'Sticker Pack',
+    detailDescription: 'Bộ sticker nhận diện Nhảy Cái Giải cho laptop, bình nước, battle notebook và các món đồ tập cá nhân.',
+    schedule: 'Có sẵn tại sự kiện',
+    location: 'NCG merch booth',
+    price: 'Combo 6 miếng',
   },
 ]
 

@@ -12,9 +12,11 @@ export default function ProgramDetailPage() {
   const [registrationOpen, setRegistrationOpen] = useState(false)
   const [chooserOpen, setChooserOpen] = useState(false)
 
-  if (!program || program.type === 'merch') {
+  if (!program) {
     return <Navigate replace to="/" />
   }
+
+  const isMerch = program.type === 'merch'
 
   return (
     <main className="min-h-screen overflow-x-clip bg-[#111110] font-['Be_Vietnam_Pro',sans-serif] text-[#f4f1ea] [background:linear-gradient(145deg,#171615,#111110_58%)]">
@@ -28,7 +30,7 @@ export default function ProgramDetailPage() {
             ← Trang chủ
           </Link>
           <p className="mt-8 text-[11px] font-bold tracking-[2.4px] text-[#df454d] uppercase">
-            {program.type === 'competition' ? 'Giải đấu' : 'Workshop'} · {program.label}
+            {program.type === 'competition' ? 'Giải đấu' : isMerch ? 'Merch' : 'Workshop'} · {program.label}
           </p>
           <h1 className="mt-3 max-w-4xl text-4xl leading-none font-black uppercase sm:text-6xl">
             {program.detailTitle ?? program.title}
@@ -38,9 +40,9 @@ export default function ProgramDetailPage() {
           </p>
           <div className="mt-8 grid gap-3 sm:grid-cols-3">
             {[
-              ['Lịch', program.schedule],
-              ['Địa điểm', program.location],
-              ['Phí', program.price],
+              [isMerch ? 'Drop' : 'Lịch', program.schedule],
+              [isMerch ? 'Nhận hàng' : 'Địa điểm', program.location],
+              [isMerch ? 'Giá' : 'Phí', program.price],
             ].map(([label, value]) => (
               <div className="border border-[#f4f1ea]/15 bg-[#f4f1ea]/7 p-4" key={label}>
                 <p className="text-[10px] font-bold tracking-[2px] text-[#df454d] uppercase">{label}</p>
@@ -48,13 +50,19 @@ export default function ProgramDetailPage() {
               </div>
             ))}
           </div>
-          <button
-            className="mt-8 inline-flex min-h-12 items-center justify-center rounded-sm border-0 border-b-3 border-[#c92c35] bg-[#f4f1ea] px-8 text-sm font-extrabold tracking-wide text-[#111110] uppercase transition hover:-translate-y-0.5 hover:bg-white"
-            onClick={() => setRegistrationOpen(true)}
-            type="button"
-          >
-            Đăng ký {program.type === 'competition' ? 'giải đấu' : 'workshop'}
-          </button>
+          {isMerch ? (
+            <div className="mt-8 border-l-3 border-[#df454d] bg-[#f4f1ea]/7 px-4 py-3 text-sm leading-7 text-[#e7e2d8]">
+              Merch được đặt/mua trực tiếp tại booth trong các chặng sự kiện. Theo dõi thông báo của NCG để cập nhật số lượng và thời gian mở drop.
+            </div>
+          ) : (
+            <button
+              className="mt-8 inline-flex min-h-12 items-center justify-center rounded-sm border-0 border-b-3 border-[#c92c35] bg-[#f4f1ea] px-8 text-sm font-extrabold tracking-wide text-[#111110] uppercase transition hover:-translate-y-0.5 hover:bg-white"
+              onClick={() => setRegistrationOpen(true)}
+              type="button"
+            >
+              Đăng ký {program.type === 'competition' ? 'giải đấu' : 'workshop'}
+            </button>
+          )}
         </div>
         <figure className="overflow-hidden rounded-lg border border-[#f4f1ea]/15 bg-[#f4f1ea]/6 lg:sticky lg:top-26 lg:self-start">
           <img
@@ -65,12 +73,14 @@ export default function ProgramDetailPage() {
         </figure>
       </section>
       <HomeFooter />
-      <RegistrationModal
-        contextLabel={program.title}
-        open={registrationOpen}
-        selectedProgram={program}
-        onClose={() => setRegistrationOpen(false)}
-      />
+      {!isMerch && (
+        <RegistrationModal
+          contextLabel={program.title}
+          open={registrationOpen}
+          selectedProgram={program}
+          onClose={() => setRegistrationOpen(false)}
+        />
+      )}
       <ProgramChooserModal open={chooserOpen} onClose={() => setChooserOpen(false)} />
     </main>
   )

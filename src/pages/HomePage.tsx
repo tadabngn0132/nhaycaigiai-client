@@ -36,6 +36,7 @@ export default function HomePage() {
       <HomeProgramSection
         eyebrow="Merch Store"
         items={merchItems}
+        onAction={(item) => navigate(`/program/${item.slug}`)}
         title="NCG Merch Drop"
       />
       <RegisterCta onRegister={openProgramChooser} />
