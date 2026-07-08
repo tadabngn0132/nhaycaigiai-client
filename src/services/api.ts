@@ -14,6 +14,8 @@ export type RegistrationResponse = {
   transferContent: string
   bankInfo: BankInfo
   ticketSummary: string
+  programTitle: string
+  programType: 'competition' | 'workshop'
   email: string
   fullName: string
 }
@@ -39,6 +41,8 @@ export async function createRegistration(data: RegistrationData): Promise<Regist
       transferContent: `${registrationCode} ${data.fullName}`.toUpperCase(),
       bankInfo: MOCK_BANK_INFO,
       ticketSummary: getTicketSummary(data.ticketTypes),
+      programTitle: data.programTitle,
+      programType: data.programType,
       email: data.email,
       fullName: data.fullName,
     }
@@ -59,7 +63,11 @@ export async function createRegistration(data: RegistrationData): Promise<Regist
     throw new Error('Máy chủ đang bận. Vui lòng thử lại sau.')
   }
 
-  const registration = await response.json() as RegistrationResponse
+  const registration = {
+    ...(await response.json() as RegistrationResponse),
+    programTitle: data.programTitle,
+    programType: data.programType,
+  }
   setCurrentRegistration(registration)
   return registration
 }

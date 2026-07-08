@@ -1,11 +1,19 @@
+import type { HomeProgramItem } from '../../home/homeData'
 import RegistrationForm from './RegistrationForm'
 
 type RegistrationModalProps = {
+  contextLabel?: string
   open: boolean
   onClose: () => void
+  selectedProgram: HomeProgramItem
 }
 
-export function RegistrationModal({ open, onClose }: RegistrationModalProps) {
+export function RegistrationModal({
+  contextLabel,
+  open,
+  onClose,
+  selectedProgram,
+}: RegistrationModalProps) {
   if (!open) return null
 
   return (
@@ -23,6 +31,11 @@ export function RegistrationModal({ open, onClose }: RegistrationModalProps) {
           <div>
             <p className="text-[10px] font-bold tracking-[2px] text-[#c92c35] uppercase">NCG 3.0</p>
             <h2 className="mt-1 text-xl font-black uppercase">Đăng ký tham gia</h2>
+            {contextLabel && (
+              <p className="mt-1 text-[12px] font-semibold text-[#716d67]">
+                Dang ky: {contextLabel}
+              </p>
+            )}
           </div>
           <button
             aria-label="Đóng đăng ký"
@@ -33,7 +46,7 @@ export function RegistrationModal({ open, onClose }: RegistrationModalProps) {
             ×
           </button>
         </div>
-        <RegistrationForm onSubmitted={onClose} />
+        <RegistrationForm selectedProgram={selectedProgram} onSubmitted={onClose} />
       </div>
     </div>
   )

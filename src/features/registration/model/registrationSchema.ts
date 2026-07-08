@@ -1,6 +1,9 @@
 import { z } from 'zod'
 
 export const registrationSchema = z.object({
+  programSlug: z.string().min(1, 'Vui lòng chọn giải đấu hoặc workshop'),
+  programTitle: z.string().min(1, 'Vui lòng chọn giải đấu hoặc workshop'),
+  programType: z.enum(['competition', 'workshop']),
   ticketTypes: z.array(z.enum(['competitor', 'audience']))
     .min(1, 'Vui lòng chọn ít nhất một loại vé'),
   fullName: z.string().trim().min(2, 'Vui lòng nhập họ và tên'),
@@ -20,7 +23,7 @@ export const registrationSchema = z.object({
   note: z.string().trim().max(500, 'Ghi chú tối đa 500 ký tự').optional(),
   acceptedTerms: z.literal(true, { message: 'Bạn cần đồng ý với điều lệ cuộc thi' }),
 }).superRefine((data, context) => {
-  if (!data.ticketTypes.includes('competitor')) return
+  if (data.programType !== 'competition' || !data.ticketTypes.includes('competitor')) return
 
   const requiredCompetitorFields: Array<[keyof typeof data, string]> = [
     ['stageName', 'Vui lòng nhập tên thi đấu'],

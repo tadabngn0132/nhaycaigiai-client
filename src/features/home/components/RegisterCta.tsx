@@ -1,10 +1,10 @@
 type RegisterCtaProps = {
-  onRegister: () => void
-}
+  onRegister: () => void;
+};
 
 export function RegisterCta({ onRegister }: RegisterCtaProps) {
   return (
-    <section className="pb-24 sm:pb-32">
+    <section className="">
       <div className="mx-auto max-w-280 border-y border-[#f4f1ea]/15 px-3 py-10 text-center sm:px-4 lg:px-6">
         <p className="text-[11px] font-bold tracking-[2.6px] text-[#df454d] uppercase">
           Ready to dance
@@ -21,5 +21,5 @@ export function RegisterCta({ onRegister }: RegisterCtaProps) {
         </button>
       </div>
     </section>
-  )
+  );
 }
