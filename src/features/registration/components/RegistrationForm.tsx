@@ -2,6 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm, useWatch } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
+import type { HomeProgramItem } from '../../home/homeData'
 import { createRegistration } from '../../../services/api'
 import {
   type RegistrationData,
@@ -14,9 +15,10 @@ import { TicketSelector } from './TicketSelector'
 
 type RegistrationFormProps = {
   onSubmitted?: () => void
+  selectedProgram: HomeProgramItem
 }
 
-export default function RegistrationForm({ onSubmitted }: RegistrationFormProps) {
+export default function RegistrationForm({ onSubmitted, selectedProgram }: RegistrationFormProps) {
   const navigate = useNavigate()
   const {
     register,
@@ -25,10 +27,16 @@ export default function RegistrationForm({ onSubmitted }: RegistrationFormProps)
     formState: { errors, isSubmitting },
   } = useForm<RegistrationData>({
     resolver: zodResolver(registrationSchema),
-    defaultValues: { ticketTypes: ['competitor'] },
+    defaultValues: {
+      programSlug: selectedProgram.slug,
+      programTitle: selectedProgram.title,
+      programType: selectedProgram.type === 'workshop' ? 'workshop' : 'competition',
+      ticketTypes: selectedProgram.type === 'workshop' ? ['audience'] : ['competitor'],
+    },
   })
-  const ticketTypes = useWatch({ control, name: 'ticketTypes' })
+  const ticketTypes = useWatch({ control, name: 'ticketTypes' }) ?? []
   const isCompetitor = ticketTypes.includes('competitor')
+  const isWorkshop = selectedProgram.type === 'workshop'
 
   async function submitRegistration(data: RegistrationData) {
     try {
@@ -46,7 +54,19 @@ export default function RegistrationForm({ onSubmitted }: RegistrationFormProps)
 
   return (
     <form className="w-full min-w-0" onSubmit={handleSubmit(submitRegistration)} noValidate>
-      <TicketSelector register={register} error={errors.ticketTypes?.message} />
+      <input type="hidden" {...register('programSlug')} />
+      <input type="hidden" {...register('programTitle')} />
+      <input type="hidden" {...register('programType')} />
+      <div className="mb-4 rounded-sm border border-[#cec9c1] bg-[#f8f6f1] px-3.5 py-3">
+        <p className="text-[10px] font-bold tracking-[2px] text-[#c92c35] uppercase">
+          {isWorkshop ? 'Workshop đã chọn' : 'Giải đấu đã chọn'}
+        </p>
+        <strong className="mt-1 block text-lg font-black uppercase">{selectedProgram.title}</strong>
+        <span className="mt-1 block text-[13px] leading-6 text-[#716d67]">
+          {selectedProgram.schedule} · {selectedProgram.location}
+        </span>
+      </div>
+      {!isWorkshop && <TicketSelector register={register} error={errors.ticketTypes?.message} />}
       <PersonalInfoSection ticketTypes={ticketTypes} register={register} errors={errors} />
       {isCompetitor && <CompetitionSection register={register} errors={errors} />}
 

@@ -1,62 +1,47 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { HomeFooter } from '../features/home/components/HomeFooter'
 import { HomeHeader } from '../features/home/components/HomeHeader'
+import { HomeProgramSection } from '../features/home/components/HomeProgramSection'
 import { HeroBanner } from '../features/home/components/HeroBanner'
 import { EventIntro } from '../features/home/components/EventIntro'
-import { PeopleSection } from '../features/home/components/PeopleSection'
+import { ProgramChooserModal } from '../features/home/components/ProgramChooserModal'
 import { RegisterCta } from '../features/home/components/RegisterCta'
-import { StructureSection } from '../features/home/components/StructureSection'
-import {
-  communicationsHeads,
-  eventHeads,
-  leaders,
-  organizingCommittee,
-  publicRelationsHeads,
-} from '../features/home/homeData'
-import { RegistrationModal } from '../features/registration/components/RegistrationModal'
+import { competitions, merchItems, monthlyWorkshops } from '../features/home/homeData'
 
 export default function HomePage() {
-  const [registrationOpen, setRegistrationOpen] = useState(false)
-  const openRegistration = () => setRegistrationOpen(true)
-  const closeRegistration = () => setRegistrationOpen(false)
+  const navigate = useNavigate()
+  const [chooserOpen, setChooserOpen] = useState(false)
+  const openProgramChooser = () => setChooserOpen(true)
+  const closeProgramChooser = () => setChooserOpen(false)
 
   return (
     <main className="min-h-screen overflow-x-clip bg-[#111110] font-['Be_Vietnam_Pro',sans-serif] text-[#f4f1ea] [background:linear-gradient(145deg,#171615,#111110_58%)]">
-      <HomeHeader onRegister={openRegistration} />
+      <HomeHeader onRegister={openProgramChooser} />
       <HeroBanner />
       <EventIntro />
-      <StructureSection />
-      <PeopleSection
-        eyebrow="Organizing Committee"
-        people={organizingCommittee}
-        title="Head & Vice-head"
-        variant="large"
+      <HomeProgramSection
+        eyebrow="Competitions"
+        items={competitions}
+        onAction={(item) => navigate(`/program/${item.slug}`)}
+        title="Danh sách các giải đấu"
       />
-      <PeopleSection
-        eyebrow="Leader Of Cluster"
-        people={leaders}
+      <HomeProgramSection
+        eyebrow="Monthly Workshops"
+        items={monthlyWorkshops}
+        onAction={(item) => navigate(`/program/${item.slug}`)}
         shaded
-        title="Cluster Leaders"
+        title="Workshop hàng tháng"
       />
-      <PeopleSection
-        eyebrow="Communications Heads"
-        people={communicationsHeads}
-        title="Communications"
+      <HomeProgramSection
+        eyebrow="Merch Store"
+        items={merchItems}
+        onAction={(item) => navigate(`/program/${item.slug}`)}
+        title="NCG Merch Drop"
       />
-      <PeopleSection
-        eyebrow="Events Heads"
-        people={eventHeads}
-        shaded
-        title="Events"
-      />
-      <PeopleSection
-        eyebrow="Public Relations Heads"
-        people={publicRelationsHeads}
-        title="Public Relations"
-      />
-      <RegisterCta onRegister={openRegistration} />
+      <RegisterCta onRegister={openProgramChooser} />
       <HomeFooter />
-      <RegistrationModal open={registrationOpen} onClose={closeRegistration} />
+      <ProgramChooserModal open={chooserOpen} onClose={closeProgramChooser} />
     </main>
   )
 }

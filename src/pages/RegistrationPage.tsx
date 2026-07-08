@@ -1,33 +1,50 @@
-import RegistrationForm from '../features/registration/components/RegistrationForm'
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { HomeFooter } from '../features/home/components/HomeFooter'
+import { HomeHeader } from '../features/home/components/HomeHeader'
+import { ProgramChooserModal } from '../features/home/components/ProgramChooserModal'
+import { registrationPrograms } from '../features/home/homeData'
 
 export default function RegistrationPage() {
-  return (
-    <main className="min-h-screen overflow-x-clip bg-[#111110] font-['Be_Vietnam_Pro',sans-serif] text-[#f4f1ea] [background:radial-gradient(circle_at_14%_18%,rgba(201,44,53,.13),transparent_28%),radial-gradient(circle_at_88%_76%,rgba(201,44,53,.08),transparent_25%),radial-gradient(circle_at_50%_-20%,#302f2d,transparent_42%),linear-gradient(145deg,#1a1918,#111110_58%)]">
-      <header className="flex h-17 items-center justify-between border-b border-[#f4f1ea]/15 bg-[#111110]/75 px-3.5 min-[381px]:px-6 md:h-20 md:px-[5vw]">
-        <a className="flex items-center text-[21px] font-black tracking-[-1px] no-underline md:text-[25px]" href="/" aria-label="NCG 3.0">
-          <span>NCG</span>
-          <strong className="ml-1.5 rotate-[-8deg] rounded-full border-2 border-current p-1 text-[11px] text-[#df454d] md:text-sm">
-            3.0
-          </strong>
-        </a>
-        <span className="max-w-28 text-right text-[10px] leading-snug tracking-wide text-[#ddd] uppercase md:max-w-none md:text-xs md:tracking-[1.5px]">
-          <i className="mr-2 inline-block size-1.5 rounded-full bg-[#f4f1ea] shadow-[0_0_9px_rgba(244,241,234,.6)]" />
-          Đang mở đăng ký
-        </span>
-      </header>
+  const [chooserOpen, setChooserOpen] = useState(false)
 
-      <section className="mx-auto max-w-280 px-2.5 py-4 sm:px-4 sm:py-6 lg:px-6 lg:py-9">
-        <div className="min-w-0 rounded-xl bg-[#efede7] p-3 text-[#181817] shadow-[0_28px_80px_rgba(0,0,0,.45)] sm:p-3.5">
-          <div className="border-0 pb-3">
-            <h2 className="m-0 text-lg font-extrabold tracking-tight sm:text-[19px]">Đăng ký dự thi</h2>
-          </div>
-          <RegistrationForm />
+  return (
+    <main className="min-h-screen overflow-x-clip bg-[#111110] font-['Be_Vietnam_Pro',sans-serif] text-[#f4f1ea] [background:linear-gradient(145deg,#171615,#111110_58%)]">
+      <HomeHeader onRegister={() => setChooserOpen(true)} />
+      <section className="mx-auto max-w-280 px-3 py-12 sm:px-4 sm:py-16 lg:px-6">
+        <p className="text-[11px] font-bold tracking-[2.4px] text-[#df454d] uppercase">
+          Đăng ký
+        </p>
+        <h1 className="mt-3 max-w-4xl text-4xl leading-none font-black uppercase sm:text-6xl">
+          Chọn giải đấu hoặc workshop
+        </h1>
+        <div className="mt-8 grid gap-4 md:grid-cols-3">
+          {registrationPrograms.map((program) => (
+            <Link
+              className="overflow-hidden rounded-lg border border-[#f4f1ea]/15 bg-[#f4f1ea]/7 text-[#f4f1ea] no-underline transition hover:-translate-y-0.5 hover:border-[#f4f1ea]/35"
+              key={program.slug}
+              to={`/program/${program.slug}`}
+            >
+              <img
+                alt={program.imageAlt}
+                className="aspect-[16/10] w-full object-cover"
+                src={program.image}
+              />
+              <div className="p-4">
+                <p className="text-[10px] font-bold tracking-[2px] text-[#df454d] uppercase">
+                  {program.type === 'competition' ? 'Giải đấu' : 'Workshop'} · {program.label}
+                </p>
+                <strong className="mt-2 block text-xl font-black uppercase">{program.title}</strong>
+                <span className="mt-3 block text-xs font-extrabold uppercase text-[#f4f1ea]">
+                  Xem chi tiết
+                </span>
+              </div>
+            </Link>
+          ))}
         </div>
       </section>
-      <footer className="flex flex-col gap-2 border-t border-[#f4f1ea]/15 bg-[#111110]/75 px-[5vw] py-6 text-[10px] tracking-wider text-[#aaa7a1] uppercase sm:flex-row sm:justify-between">
-        <span>© 2026 NCG</span>
-        <span>Move loud. Dance proud.</span>
-      </footer>
+      <HomeFooter />
+      <ProgramChooserModal open={chooserOpen} onClose={() => setChooserOpen(false)} />
     </main>
   )
 }
