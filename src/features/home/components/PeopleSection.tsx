@@ -1,4 +1,4 @@
-import type { PersonImage } from '../homeData'
+import type { PersonImage } from '../model/homeTypes'
 import { PeopleGrid } from './PeopleGrid'
 import { SectionHeading } from './SectionHeading'
 

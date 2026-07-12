@@ -1,4 +1,4 @@
-import type { HomeProgramItem } from '../homeData'
+import type { HomeProgramItem } from '../model/homeTypes'
 import { SectionHeading } from './SectionHeading'
 
 type HomeProgramSectionProps = {

@@ -1,75 +1,31 @@
-# React + TypeScript + Vite
+# NCG 3.0 client
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Tài liệu tổng quan cấu trúc và trách nhiệm mã nguồn: [ARCHITECTURE.md](./ARCHITECTURE.md).
 
-Currently, two official plugins are available:
+Ứng dụng sử dụng Redux Toolkit + React Redux để quản lý registration state dùng
+xuyên các route đăng ký, thanh toán và xác nhận.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+> Hiện form đăng ký đã gọi API server và được lưu bằng Prisma/PostgreSQL. Danh
+> sách chương trình/nhân sự vẫn là dữ liệu tĩnh; QR và bước xác minh thanh toán
+> vẫn là mock. Xem bảng trạng thái chi tiết trong [ARCHITECTURE.md](./ARCHITECTURE.md#3-trạng-thái-tích-hợp-dữ-liệu).
 
-## React Compiler
+## Chạy local
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Chạy API server ở cổng `3000`, sau đó chạy client:
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Trong môi trường phát triển, Vite tự chuyển tiếp các request `/api` tới
+`http://localhost:3000`.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Khi API được deploy ở domain khác, tạo file `.env`:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```env
+VITE_API_URL=https://api.example.com/api
 ```
+
+Không cần khai báo `VITE_API_URL` nếu frontend và API dùng chung domain và API
+được phục vụ dưới đường dẫn `/api`.

@@ -1,4 +1,4 @@
-import type { PersonImage } from '../homeData'
+import type { PersonImage } from '../model/homeTypes'
 
 type PeopleGridProps = {
   people: PersonImage[]
