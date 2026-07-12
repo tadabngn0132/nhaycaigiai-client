@@ -34,9 +34,7 @@ main.tsx
       │               └─ httpClient POST /api/registrations
       │                   └─ response cập nhật registration slice
       │                       └─ store subscription persist localStorage
-      ├─ PaymentPage
-      │   ├─ select state.registration.current
-      │   └─ hiển thị PaymentDetails + RegistrationSummary
+      ├─ /payment → redirect /confirmation (tương thích URL cũ)
       └─ ConfirmationPage
           └─ select state.registration.current và hiển thị kết quả
 ```
@@ -47,9 +45,9 @@ Trong môi trường development, request `/api/*` được Vite proxy tới
 
 ## 3. Trạng thái tích hợp dữ liệu
 
-Ứng dụng hiện dùng kết hợp API thật, dữ liệu tĩnh và dữ liệu mô phỏng. Không nên
-coi toàn bộ luồng là mock, nhưng phần thanh toán cũng chưa phải một cổng thanh
-toán hoàn chỉnh.
+Phạm vi MVP hiện tại là **registration-only, chưa tích hợp SePay**. Sau khi API
+tạo registration thành công, client chuyển thẳng đến confirmation. Code UI
+payment được giữ lại để phát triển sau nhưng không nằm trong active flow.
 
 | Chức năng | Nguồn dữ liệu hiện tại | Trạng thái |
 | --- | --- | --- |
@@ -60,17 +58,19 @@ toán hoàn chỉnh.
 | Email xác nhận | SMTP phía server | Thật khi server đã cấu hình SMTP |
 | Danh sách giải đấu/workshop/merch | `features/home/homeData.ts` | Dữ liệu tĩnh phía client |
 | Danh sách nhân sự/ban tổ chức | `features/home/homeData.ts` | Dữ liệu tĩnh phía client |
-| QR thanh toán | `PaymentQr.tsx` tạo pattern trình bày | Mock, không phải QR ngân hàng |
-| Xác minh thanh toán | Nút chuyển thẳng tới `/confirmation` | Mock, chưa xác minh giao dịch |
+| Route `/payment` | Redirect tới `/confirmation` | Tạm bỏ qua trong MVP |
+| Payment components | Vẫn còn trong `features/payment` | Dormant, không được route render |
+| QR thanh toán | `PaymentQr.tsx` tạo pattern trình bày | Mock/dormant, không phải QR ngân hàng |
+| SePay/xác minh thanh toán | Chưa gọi từ client | Ngoài phạm vi MVP |
 | Giữ registration khi reload | Redux đồng bộ với localStorage | Cache client, không phải database |
 
 ### Giới hạn hiện tại
 
 - Reload trình duyệt vẫn giữ registration gần nhất nhờ localStorage, nhưng dữ
   liệu chính thức nằm trong PostgreSQL phía server.
-- Client chưa gọi payment gateway hoặc webhook ngân hàng.
-- Trang confirmation hiện xác nhận luồng UI, không chứng minh giao dịch đã được
-  thanh toán.
+- Client chưa gọi SePay, payment gateway hoặc webhook ngân hàng.
+- Trang confirmation chỉ xác nhận hồ sơ đăng ký đã được server ghi nhận, không
+  xác nhận giao dịch thanh toán.
 - Nếu SMTP chưa được cấu hình trên server, registration vẫn có thể được tạo
   nhưng email thực tế không được gửi.
 - Khi chuyển danh sách chương trình sang API, cần thay `homeData.ts` bằng module
@@ -158,7 +158,7 @@ Các route hiện tại:
 | `/` | `HomePage` | Trang chủ và danh sách chương trình |
 | `/program/:slug` | `ProgramDetailPage` | Chi tiết một chương trình |
 | `/registration` | `RegistrationPage` | Chọn chương trình để đăng ký |
-| `/payment` | `PaymentPage` | Thông tin thanh toán |
+| `/payment` | Redirect | URL tương thích; chuyển tới `/confirmation` |
 | `/confirmation` | `ConfirmationPage` | Xác nhận đăng ký |
 
 #### `index.css`
@@ -331,8 +331,8 @@ Helper tạo class cho form field theo trạng thái hợp lệ/lỗi.
 
 ### `src/features/payment/components/`
 
-Sở hữu UI trình bày thanh toán. Feature này hiện không tự gọi API mà nhận
-`RegistrationResponse` từ page; page lấy response bằng Redux selector.
+Chứa UI payment thử nghiệm để dùng ở giai đoạn tích hợp SePay sau. Feature này
+hiện dormant: không được render bởi router và không tham gia luồng MVP.
 
 | File | Trách nhiệm |
 | --- | --- |
@@ -353,7 +353,7 @@ feature components, nhưng nên tránh chứa chi tiết UI lớn hoặc request
 | `HomePage.tsx` | Ghép các section trang chủ và điều phối program chooser |
 | `ProgramDetailPage.tsx` | Đọc `slug`, tìm program và hiển thị chi tiết/registration modal |
 | `RegistrationPage.tsx` | Màn hình chọn chương trình để đăng ký |
-| `PaymentPage.tsx` | Select registration hiện tại từ Redux và ghép payment components |
+| `PaymentPage.tsx` | Page payment được giữ trong source nhưng hiện không được router render |
 | `ConfirmationPage.tsx` | Select Redux state và hiển thị kết quả xác nhận cuối luồng |
 
 ### `public/`

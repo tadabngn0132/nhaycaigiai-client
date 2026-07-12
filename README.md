@@ -3,11 +3,11 @@
 Tài liệu tổng quan cấu trúc và trách nhiệm mã nguồn: [ARCHITECTURE.md](./ARCHITECTURE.md).
 
 Ứng dụng sử dụng Redux Toolkit + React Redux để quản lý registration state dùng
-xuyên các route đăng ký, thanh toán và xác nhận.
+xuyên các route đăng ký và xác nhận.
 
-> Hiện form đăng ký đã gọi API server và được lưu bằng Prisma/PostgreSQL. Danh
-> sách chương trình/nhân sự vẫn là dữ liệu tĩnh; QR và bước xác minh thanh toán
-> vẫn là mock. Xem bảng trạng thái chi tiết trong [ARCHITECTURE.md](./ARCHITECTURE.md#3-trạng-thái-tích-hợp-dữ-liệu).
+> Phạm vi MVP hiện tại là registration-only, chưa tích hợp SePay. Sau khi submit
+> thành công, người dùng được chuyển thẳng tới confirmation; `/payment` chỉ được
+> giữ làm redirect tương thích. Xem chi tiết trong [ARCHITECTURE.md](./ARCHITECTURE.md#3-trạng-thái-tích-hợp-dữ-liệu).
 
 ## Chạy local
 

@@ -17,7 +17,7 @@ export function RegistrationSuccess({
       </p>
       <h2 className="mb-4 text-[28px] font-black uppercase sm:text-4xl">Đăng ký thành công!</h2>
       <p className="mx-auto max-w-md text-[13px] leading-relaxed text-[#74716a]">
-        Hồ sơ của bạn đã được ghi nhận. Hãy lưu lại mã đăng ký để tiếp tục thanh toán.
+        Hồ sơ của bạn đã được ghi nhận. Hãy lưu lại mã đăng ký để tra cứu khi cần.
       </p>
       <div className="mx-auto my-7 max-w-xs border border-dashed border-[#aaa69b] p-5">
         <span className="block text-[10px] tracking-wider text-[#89867e] uppercase">Mã đăng ký</span>
