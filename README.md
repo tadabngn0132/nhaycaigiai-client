@@ -2,6 +2,8 @@
 
 Tài liệu tổng quan cấu trúc và trách nhiệm mã nguồn: [ARCHITECTURE.md](./ARCHITECTURE.md).
 
+Checklist và dữ liệu test thủ công: [MANUAL_TEST.md](./MANUAL_TEST.md).
+
 Ứng dụng sử dụng Redux Toolkit + React Redux để quản lý registration state dùng
 xuyên các route đăng ký và xác nhận.
 
