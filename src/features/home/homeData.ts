@@ -1,24 +1,6 @@
-export type PersonImage = {
-  image: string
-  alt: string
-}
+import type { HomeProgramItem, PersonImage } from './model/homeTypes'
 
-export type HomeProgramItem = {
-  slug: string
-  type: 'competition' | 'workshop' | 'merch'
-  title: string
-  label: string
-  description: string
-  meta: string
-  image: string
-  imageAlt: string
-  actionLabel?: string
-  detailTitle?: string
-  detailDescription?: string
-  schedule?: string
-  location?: string
-  price?: string
-}
+export type { HomeProgramItem, PersonImage } from './model/homeTypes'
 
 const defaultTempImage = '/default-temp-image.png'
 

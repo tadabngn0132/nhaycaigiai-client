@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom'
-import { getCurrentRegistration } from '../services/api'
+import { useAppSelector } from '../app/hooks'
 
 export default function ConfirmationPage() {
-  const registration = getCurrentRegistration()
+  const registration = useAppSelector((state) => state.registration.current)
 
   return (
     <main className="grid min-h-screen place-items-center bg-[#111110] px-3 py-8 font-['Be_Vietnam_Pro',sans-serif] text-[#f4f1ea] [background:radial-gradient(circle_at_20%_18%,rgba(201,44,53,.16),transparent_28%),radial-gradient(circle_at_82%_74%,rgba(41,163,156,.10),transparent_26%),linear-gradient(145deg,#1a1918,#111110_58%)]">

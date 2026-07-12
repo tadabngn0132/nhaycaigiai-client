@@ -2,13 +2,14 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm, useWatch } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
-import type { HomeProgramItem } from '../../home/homeData'
-import { createRegistration } from '../../../services/api'
+import { useAppDispatch, useAppSelector } from '../../../app/hooks'
+import type { HomeProgramItem } from '../../home/model/homeTypes'
 import {
   type RegistrationData,
   registrationSchema,
 } from '../model/registrationSchema'
 import { getTicketPrice } from '../registrationOptions'
+import { submitRegistration as submitRegistrationThunk } from '../store/registrationSlice'
 import { CompetitionSection } from './CompetitionSection'
 import { PersonalInfoSection } from './PersonalInfoSection'
 import { TicketSelector } from './TicketSelector'
@@ -20,11 +21,13 @@ type RegistrationFormProps = {
 
 export default function RegistrationForm({ onSubmitted, selectedProgram }: RegistrationFormProps) {
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+  const isSubmitting = useAppSelector((state) => state.registration.status === 'submitting')
   const {
     register,
     handleSubmit,
     control,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<RegistrationData>({
     resolver: zodResolver(registrationSchema),
     defaultValues: {
@@ -40,14 +43,16 @@ export default function RegistrationForm({ onSubmitted, selectedProgram }: Regis
 
   async function submitRegistration(data: RegistrationData) {
     try {
-      await createRegistration(data)
+      await dispatch(submitRegistrationThunk(data)).unwrap()
       toast.success('Đã tạo thông tin thanh toán')
       onSubmitted?.()
       navigate('/payment')
     } catch (error) {
-      const message = error instanceof Error
-        ? error.message
-        : 'Không thể gửi đăng ký. Vui lòng thử lại.'
+      const message = typeof error === 'string'
+        ? error
+        : error instanceof Error
+          ? error.message
+          : 'Không thể gửi đăng ký. Vui lòng thử lại.'
       toast.error(message)
     }
   }

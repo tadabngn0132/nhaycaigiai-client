@@ -1,4 +1,4 @@
-import type { HomeProgramItem } from '../../home/homeData'
+import type { HomeProgramItem } from '../../home/model/homeTypes'
 import RegistrationForm from './RegistrationForm'
 
 type RegistrationModalProps = {
