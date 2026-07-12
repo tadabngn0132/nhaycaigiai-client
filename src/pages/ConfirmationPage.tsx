@@ -10,16 +10,18 @@ export default function ConfirmationPage() {
         <div className="mx-auto mb-6 grid size-17 place-items-center rounded-full border-2 border-[#c92c35] bg-[#111110] text-[32px] text-[#f4f1ea]">
           ✓
         </div>
-        <p className="mb-3 text-[11px] font-bold tracking-[2.4px] text-[#c92c35] uppercase">Confirmation page</p>
-        <h1 className="text-[28px] font-black uppercase sm:text-4xl">Đăng ký đã được xác nhận</h1>
+        <p className="mb-3 text-[11px] font-bold tracking-[2.4px] text-[#c92c35] uppercase">NCG 3.0</p>
+        <h1 className="text-[28px] font-black uppercase sm:text-4xl">
+          {registration ? 'Đăng ký thành công' : 'Chưa có đăng ký'}
+        </h1>
         <p className="mx-auto mt-4 max-w-md text-[13px] leading-relaxed text-[#74716a]">
           {registration
-            ? `Email xác nhận demo đã được gửi tới ${registration.email}. Vui lòng lưu mã tham gia bên dưới.`
-            : 'Đây là trang xác nhận demo. Hiện chưa có đăng ký nào được lưu trong mock data.'}
+            ? `Hồ sơ của bạn đã được ghi nhận. Thông tin xác nhận sẽ được gửi tới ${registration.email} nếu hệ thống email được bật. Vui lòng lưu mã đăng ký bên dưới.`
+            : 'Vui lòng chọn chương trình và hoàn thành form đăng ký trước.'}
         </p>
         {registration && (
           <div className="mx-auto my-7 max-w-sm border border-dashed border-[#aaa69b] p-5">
-            <span className="block text-[10px] tracking-wider text-[#89867e] uppercase">Mã tham gia</span>
+            <span className="block text-[10px] tracking-wider text-[#89867e] uppercase">Mã đăng ký</span>
             <strong className="mt-2 block text-2xl tracking-widest">{registration.registrationCode}</strong>
             <span className="mt-2 block text-[12px] text-[#716d67]">{registration.fullName}</span>
           </div>

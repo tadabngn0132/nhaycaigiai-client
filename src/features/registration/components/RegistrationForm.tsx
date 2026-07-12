@@ -44,9 +44,9 @@ export default function RegistrationForm({ onSubmitted, selectedProgram }: Regis
   async function submitRegistration(data: RegistrationData) {
     try {
       await dispatch(submitRegistrationThunk(data)).unwrap()
-      toast.success('Đã tạo thông tin thanh toán')
+      toast.success('Đăng ký thành công')
       onSubmitted?.()
-      navigate('/payment')
+      navigate('/confirmation')
     } catch (error) {
       const message = typeof error === 'string'
         ? error
